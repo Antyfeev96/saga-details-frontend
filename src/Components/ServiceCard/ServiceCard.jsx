@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  changeInputField,
-  changeEditedId,
-  fetchService,
-  saveService
-} from '../../Reducers/services';
+  searchSkillRequest,
+  searchSkillsRequest,
+  searchSkillsSuccess,
+  searchSkillsFailure
+} from '../../Actions/actionCreators';
 import React, { Fragment, useEffect } from "react";
 import Error from "../Error/Error";
 import Spinner from "../Spinner/Spinner";
@@ -50,27 +50,27 @@ export default function ServiceCard() {
   const history = useHistory();
 
   useEffect(() => {
-    if (state.editedId === null) return;
-    dispatch(fetchService(state.editedId))
-  },[dispatch, state.editedId])
+    if (state.selectedId === null) return;
+    // dispatch(fetchService(state.editedId))
+  },[dispatch, state.selectedId]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    dispatch(changeInputField({ name, value }));
+    // dispatch(changeInputField({ name, value }));
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { editedId, name, price, content } = state
-    dispatch(saveService({ id: editedId, name, price, content }))
+    // dispatch(saveService({ id: editedId, name, price, content }))
     history.goBack();
-    clearInputs();
+    // clearInputs();
   }
 
   const handleCancel = () => {
     history.goBack()
-    dispatch(changeEditedId(null));
-    clearInputs();
+    // dispatch(changeEditedId(null));
+    // clearInputs();
   }
 
   return (

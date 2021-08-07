@@ -26,26 +26,27 @@ const List = styled.ul`
 `
 
 export default function ItemsList() {
-  const state = useSelector(state => state.myState);
+  const state = useSelector(state => state.services);
+  console.log({state})
   const dispatch = useDispatch();
   const match = useRouteMatch();
 
   useEffect(() => {
-    dispatch(fetchServices());
+    // dispatch(fetchServices());
   }, [dispatch])
 
 
   const handleEdit = async (name, value, id) => {
-    dispatch(changeEditedId(+id))
+    // dispatch(changeEditedId(+id))
   }
 
   const handleRemove = async id => {
-    dispatch(deleteService(id)) // подсветка от webstorm
+    // dispatch(deleteService(id)) // подсветка от webstorm
   }
 
   return (
    <List>
-     {(state.error && <Error/>) || (state.loading ? <Spinner /> : state.list.map(item =>
+     {(state.error && <Error/>) || (state.loading ? <Spinner /> : state.items.map(item =>
         <li key={item.id} className="item">
         {item.name} {item.price} <span>₽</span>
         <Link to={`${match.url}/${item.id}`}>

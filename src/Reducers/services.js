@@ -3,13 +3,17 @@ import {
     SEARCH_SKILLS_REQUEST,
     SEARCH_SKILLS_FAILURE,
     SEARCH_SKILLS_SUCCESS,
-} from '../actions/actionTypes'
+} from '../Actions/actionTypes'
 
 const initialState = {
     items: [],
     loading: false,
     error: null,
-    selectedService: null,
+    selectedService: {
+        name: '',
+        price: '',
+        content: '',
+    },
     selectedId: null
 };
 

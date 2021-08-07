@@ -1,10 +1,10 @@
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import React from "react";
 import MainPage from "./Components/MainPage/MainPage";
-import {Redirect} from "react-router-dom";
-import ServiceCard from "saga-details-frontend/src/Components/ServiceCard/ServiceCard";
+import { Redirect } from "react-router-dom";
+import ServiceCard from "./Components/ServiceCard/ServiceCard";
 
 const Container = styled.div`
   width: 50%;
