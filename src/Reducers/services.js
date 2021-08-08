@@ -1,8 +1,9 @@
 import {
-    SEARCH_SKILL_REQUEST,
-    SEARCH_SKILLS_REQUEST,
-    SEARCH_SKILLS_FAILURE,
-    SEARCH_SKILLS_SUCCESS,
+    FETCH_SERVICE_REQUEST,
+    FETCH_SERVICES_REQUEST,
+    FETCH_SERVICES_FAILURE,
+    FETCH_SERVICES_SUCCESS,
+    CHANGE_SELECTED_ID
 } from '../Actions/actionTypes'
 
 const initialState = {
@@ -19,33 +20,39 @@ const initialState = {
 
 export default function servicesReducer(state = initialState, action) {
     switch (action.type) {
-        case SEARCH_SKILLS_REQUEST:
+        case FETCH_SERVICES_REQUEST:
             return {
                 ...state,
                 loading: true,
                 error: null,
             };
-        case SEARCH_SKILLS_FAILURE:
-            const {error} = action.payload;
+        case FETCH_SERVICES_FAILURE:
+            const { error } = action.payload;
             return {
                 ...state,
                 loading: false,
                 error,
             };
-        case SEARCH_SKILLS_SUCCESS:
-            const {items} = action.payload;
+        case FETCH_SERVICES_SUCCESS:
+            const { items } = action.payload;
             return {
                 ...state,
                 items,
                 loading: false,
                 error: null,
             };
-        case SEARCH_SKILL_REQUEST:
-            const {search} = action.payload;
+        case FETCH_SERVICE_REQUEST:
             return {
                 ...state,
-                search
+                loading: true,
+                error: null,
             };
+        case CHANGE_SELECTED_ID:
+            const { selectedId } = action.payload;
+            return {
+                ...state,
+                selectedId
+            }
         default:
             return state;
     }

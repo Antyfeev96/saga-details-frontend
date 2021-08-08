@@ -5,17 +5,22 @@ export default class API {
 
     async fetchItems() {
         try {
-            return await fetch(`${this.url}/services`);
+            const response = await fetch(`${this.url}/services`);
+            return await response.json();
         } catch (e) {
-            console.log(e)
+            throw new Error(e)
         }
     }
 
-    async getItem(id) {
+    async fetchItem(id) {
         try {
-            return await fetch(`${this.url}/services/${id}`);
+            const response = await fetch(`${this.url}/services/${id}`);
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return await response.json();
         } catch (e) {
-            console.log(e)
+            throw new Error(e)
         }
     }
 }

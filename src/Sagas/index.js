@@ -1,39 +1,44 @@
-import { takeLatest, put, spawn, debounce, retry, take, fork } from 'redux-saga/effects';
-import { searchSkillRequest, searchSkillsRequest, searchSkillsSuccess, searchSkillsFailure } from '../Actions/actionCreators';
-import { SEARCH_SKILLS_REQUEST } from '../Actions/actionTypes';
+import { takeLatest, put, spawn, debounce, retry, take, fork, call } from 'redux-saga/effects';
+import { fetchServiceRequest, fetchServicesRequest, fetchServicesSuccess, fetchServicesFailure } from '../Actions/actionCreators';
+import {
+    FETCH_SERVICE_REQUEST,
+    FETCH_SERVICES_REQUEST, FETCH_SERVICES_FAILURE, FETCH_SERVICES_SUCCESS,
+    CHANGE_SELECTED_ID
+} from '../Actions/actionTypes';
+import API from "../API/index";
+const api = new API()
 
-function filterChangeSearchAction({type, payload}) {
-    return payload.search.trim() !== ''
-}
+// // worker
+// function* handleChangeSearchSaga(action) {
+//     yield put(searchServicesRequest(action.payload.search));
+// }
+//
+// // watcher
+// function* watchChangeSearchSaga() {
+//     yield debounce(100, filterChangeSearchAction, handleChangeSearchSaga);
+// }
 
 // worker
-function* handleChangeSearchSaga(action) {
-    yield put(searchSkillsRequest(action.payload.search));
-}
-
-// watcher
-function* watchChangeSearchSaga() {
-    yield debounce(100, filterChangeSearchAction, handleChangeSearchSaga);
-}
-
-// worker
-function* handleSearchSkillsSaga(action) {
+function* handleFetchServicesSaga() {
     try {
-        const retryCount = 3;
-        const retryDelay = 1000; // ms
-        // const data = yield retry(retryCount, retryDelay, searchSkills, action.payload.search);
-        // yield put(searchSkillsSuccess(data));
+        const data = yield call(async () => await api.fetchItems());
+        console.log({data})
+        yield put(fetchServicesSuccess(data));
     } catch (e) {
-        yield put(searchSkillsFailure(e.message));
+        console.log({e})
+        yield put(fetchServicesFailure(e.message));
     }
 }
 
 // watcher
-function* watchSearchSkillsSaga() {
-    yield takeLatest(SEARCH_SKILLS_REQUEST, handleSearchSkillsSaga);
+function* watchFetchServicesSaga() {
+    while (true) {
+        const action = yield take(FETCH_SERVICES_REQUEST);
+        yield fork(handleFetchServicesSaga, action);
+    }
 }
 
 export default function* saga() {
-    yield spawn(watchChangeSearchSaga);
-    yield spawn(watchSearchSkillsSaga)
+    yield spawn(watchFetchServicesSaga);
+    // yield spawn(watchSearchSkillsSaga)
 }

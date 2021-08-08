@@ -1,23 +1,29 @@
 import {
-    SEARCH_SKILL_REQUEST, SEARCH_SKILLS_REQUEST, SEARCH_SKILLS_SUCCESS, SEARCH_SKILLS_FAILURE
+    FETCH_SERVICE_REQUEST,
+    FETCH_SERVICES_REQUEST, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILURE,
+    CHANGE_SELECTED_ID
 } from "./actionTypes";
 
-export const searchSkillRequest = search => ({
-    type: SEARCH_SKILL_REQUEST,
+export const fetchServiceRequest = search => ({
+    type: FETCH_SERVICE_REQUEST,
     payload: { search },
 });
 
-export const searchSkillsRequest = search => ({
-    type: SEARCH_SKILLS_REQUEST,
-    payload: { search },
+export const fetchServicesRequest = () => ({
+    type: FETCH_SERVICES_REQUEST
 });
 
-export const searchSkillsFailure = error => ({
-    type: SEARCH_SKILLS_FAILURE,
-    payload: { error },
+export const fetchServicesFailure = error => ({
+    type: FETCH_SERVICES_FAILURE,
+    payload: { error }
 });
 
-export const searchSkillsSuccess = items => ({
-    type: SEARCH_SKILLS_SUCCESS,
+export const fetchServicesSuccess = items => ({
+    type: FETCH_SERVICES_SUCCESS,
     payload: { items },
 });
+
+export const changeSelectedId = id => ({
+    type: CHANGE_SELECTED_ID,
+    payload: { id },
+})

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux'
 import React, { useEffect } from "react";
+import { fetchServicesRequest } from "../../Actions/actionCreators";
 import Spinner from "../Spinner/Spinner";
 import Error from "../Error/Error";
 import { Link, useRouteMatch, } from "react-router-dom";
@@ -26,33 +27,21 @@ const List = styled.ul`
 `
 
 export default function ItemsList() {
-  const state = useSelector(state => state.services);
-  console.log({state})
+  const state = useSelector(({ services }) => services);
   const dispatch = useDispatch();
   const match = useRouteMatch();
 
+  console.log({state})
+
   useEffect(() => {
-    // dispatch(fetchServices());
+    dispatch(fetchServicesRequest());
   }, [dispatch])
-
-
-  const handleEdit = async (name, value, id) => {
-    // dispatch(changeEditedId(+id))
-  }
-
-  const handleRemove = async id => {
-    // dispatch(deleteService(id)) // подсветка от webstorm
-  }
 
   return (
    <List>
      {(state.error && <Error/>) || (state.loading ? <Spinner /> : state.items.map(item =>
         <li key={item.id} className="item">
         {item.name} {item.price} <span>₽</span>
-        <Link to={`${match.url}/${item.id}`}>
-          <button onClick={() => handleEdit(item.name, item.price, item.id)}>✎</button>
-        </Link>
-        <button onClick={() => handleRemove(item.id)}>✕</button>
         </li>))}
    </List>
   )
