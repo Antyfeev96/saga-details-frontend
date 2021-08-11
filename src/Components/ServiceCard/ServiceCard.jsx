@@ -1,38 +1,38 @@
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  searchSkillRequest,
-  searchSkillsRequest,
-  searchSkillsSuccess,
-  searchSkillsFailure
+  fetchServiceRequest,
+  fetchServicesRequest,
+  fetchServicesSuccess,
+  fetchServicesFailure
 } from '../../Actions/actionCreators';
 import React, { Fragment, useEffect } from "react";
 import Error from "../Error/Error";
 import Spinner from "../Spinner/Spinner";
 import { useHistory } from "react-router-dom";
 
-const Form = styled.form`
+const Container = styled.div`
   input {
     display: block;
     padding: 2px;
     margin-top: 15px;
     width: 200px;
   }
-  
+
   .form__buttons {
     margin-top: 15px;
-    
+
     & button:nth-of-type(n + 2) {
       margin-left: 15px;
     }
   }
-`
+`;
 
-const NameInput = styled.input``
+const NameField = styled.div``;
 
-const PriceInput = styled.input``
+const PriceField = styled.div``;
 
-const ContentInput = styled.input``
+const ContentField = styled.div``;
 
 const Button = styled.button`
   padding: 5px;
@@ -42,52 +42,48 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 20px;
-`
+`;
 
 export default function ServiceCard() {
-  const state = useSelector(state => state.myState);
+  const state = useSelector(({ services }) => services);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    if (state.selectedId === null) return;
-    // dispatch(fetchService(state.editedId))
-  },[dispatch, state.selectedId]);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    // dispatch(changeInputField({ name, value }));
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const { editedId, name, price, content } = state
-    // dispatch(saveService({ id: editedId, name, price, content }))
-    history.goBack();
-    // clearInputs();
-  }
-
   const handleCancel = () => {
     history.goBack()
-    // dispatch(changeEditedId(null));
-    // clearInputs();
+  }
+
+  const handleRepeat = async () => {
+    dispatch(fetchServiceRequest(state.selectedId))
   }
 
   return (
       <Fragment>
-        {(state.error && <Error/>) || (state.loading ? <Spinner /> :
-            <Form className="form" onSubmit={handleSubmit}>
-              <div>Название</div>
-              <NameInput className="form__name" name='name' onChange={handleChange} value={state.name}/>
-              <div>Стоимость</div>
-              <PriceInput className="form__price" name='price' onChange={handleChange} value={state.price}/>
-              <div>Описание</div>
-              <ContentInput className="form__description" name='content' onChange={handleChange} value={state.content}/>
-              <div className="form__buttons">
-                <Button className="form__cancel" onClick={handleCancel} type='button'>Cancel</Button>
-                <Button className="form__button" type='submit'>Save</Button>
+        {(state.error && <Error handleRepeat={handleRepeat} />) ||
+        ((state.loading || state.selectedService.name === '') ? (
+            <Spinner />
+        ) : (
+            <Container className='form'>
+              <NameField className='form__name' name='name'>
+                Название: {state.selectedService.name}
+              </NameField>
+              <PriceField className='form__price' name='price'>
+                Стоимость: {state.selectedService.price}
+              </PriceField>
+              <ContentField className='form__content' name='content'>
+                Описание: {state.selectedService.content}
+              </ContentField>
+              <div className='form__buttons'>
+                <Button
+                    className='form__cancel'
+                    onClick={handleCancel}
+                    type='button'
+                >
+                  Cancel
+                </Button>
               </div>
-            </Form>)}
+            </Container>
+        ))}
       </Fragment>
   )
 }

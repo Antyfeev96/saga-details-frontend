@@ -8,7 +8,7 @@ import ServiceCard from "./Components/ServiceCard/ServiceCard";
 
 const Container = styled.div`
   width: 50%;
-  margin: 100px auto 0 auto;
+  margin: 100px auto 0;
 `
 
 function App() {

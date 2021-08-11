@@ -1,16 +1,29 @@
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux'
-import React, { useEffect } from "react";
-import { fetchServicesRequest } from "../../Actions/actionCreators";
+import {useSelector, useDispatch} from 'react-redux'
+import React, {useEffect} from "react";
+import {fetchServicesRequest, changeSelectedId, fetchServiceRequest} from "../../Actions/actionCreators";
 import Spinner from "../Spinner/Spinner";
 import Error from "../Error/Error";
-import { Link, useRouteMatch, } from "react-router-dom";
+import {Link, useRouteMatch,} from "react-router-dom";
 
 const List = styled.ul`
-  margin-top: 25px;
+  margin: 25px auto 0;
   padding: 15px;
   border: 1px solid black;
   border-radius: 5px;
+  text-align: center;
+  
+  & li {
+    width: fit-content;
+    margin: 0 auto;
+    list-style-type: none;
+    cursor: pointer;
+    
+    & a {
+      text-decoration: none;
+      color: black;
+    }
+  }
 
   & .item:nth-of-type(n + 2) {
     margin-top: 15px;
@@ -27,22 +40,34 @@ const List = styled.ul`
 `
 
 export default function ItemsList() {
-  const state = useSelector(({ services }) => services);
-  const dispatch = useDispatch();
-  const match = useRouteMatch();
+    const state = useSelector(({services}) => services);
+    const dispatch = useDispatch();
+    const match = useRouteMatch();
 
-  console.log({state})
+    useEffect(() => {
+        dispatch(fetchServicesRequest());
+    }, [dispatch])
 
-  useEffect(() => {
-    dispatch(fetchServicesRequest());
-  }, [dispatch])
+    const handleRepeat = async () => {
+        dispatch(fetchServicesRequest());
+    }
 
-  return (
-   <List>
-     {(state.error && <Error/>) || (state.loading ? <Spinner /> : state.items.map(item =>
-        <li key={item.id} className="item">
-        {item.name} {item.price} <span>₽</span>
-        </li>))}
-   </List>
-  )
+    const handleSelectID = async (id) => {
+        console.log({id})
+        dispatch(changeSelectedId(id))
+
+        dispatch(fetchServiceRequest(state.selectedId))
+        console.log({updatedId: state.selectedId})
+    }
+
+    return (
+        <List>
+            {(state.error && <Error handleRepeat={handleRepeat}/>) || (state.loading ?
+                <Spinner/> : state.items.map(item =>
+                    <li key={item.id} onClick={() => handleSelectID(item.id)} className="item">
+                        <Link to={`${match.url}/${item.id}`}> {item.name} {item.price} <span>₽</span></Link>
+                    </li>
+                    ))}
+        </List>
+    )
 }

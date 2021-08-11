@@ -10,11 +10,21 @@ const StyledError = styled.div`
     color: white;
 `;
 
-const Error = () => {
+const StyledButton = styled.button`
+    margin-top: 15px;
+    width: 20%;
+    min-width: 75px;
+    height: 30px;
+    padding: 5px;
+    cursor: pointer;
+`
+
+const Error = ({ handleRepeat }) => {
     return (
         <StyledError>
             Произошла ошибка! <br/>
-            Проверьте соединение и обновите страницу
+            Проверьте соединение и обновите страницу <br/>
+            <StyledButton onClick={async () => await handleRepeat()}>Обновить</StyledButton>
         </StyledError>
     );
 };

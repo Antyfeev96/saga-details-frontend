@@ -1,31 +1,39 @@
 import { takeLatest, put, spawn, debounce, retry, take, fork, call } from 'redux-saga/effects';
-import { fetchServiceRequest, fetchServicesRequest, fetchServicesSuccess, fetchServicesFailure } from '../Actions/actionCreators';
+import { fetchServiceRequest, fetchServiceSuccess, fetchServicesRequest, fetchServicesSuccess, fetchServicesFailure } from '../Actions/actionCreators';
 import {
     FETCH_SERVICE_REQUEST,
     FETCH_SERVICES_REQUEST, FETCH_SERVICES_FAILURE, FETCH_SERVICES_SUCCESS,
     CHANGE_SELECTED_ID
 } from '../Actions/actionTypes';
+
 import API from "../API/index";
 const api = new API()
 
-// // worker
-// function* handleChangeSearchSaga(action) {
-//     yield put(searchServicesRequest(action.payload.search));
-// }
-//
-// // watcher
-// function* watchChangeSearchSaga() {
-//     yield debounce(100, filterChangeSearchAction, handleChangeSearchSaga);
-// }
+// worker
+function* handleFetchServiceSaga(id) {
+    console.log({id})
+    try {
+        const data = yield call(async () => await api.fetchItem(id));
+        yield put(fetchServiceSuccess(data));
+    } catch (e) {
+        yield put(fetchServicesFailure(e.message));
+    }
+}
+
+// watcher
+function* watchFetchServiceSaga() {
+    while (true) {
+        const action = yield take(FETCH_SERVICE_REQUEST);
+        yield fork(handleFetchServiceSaga, action.payload.id)
+    }
+}
 
 // worker
 function* handleFetchServicesSaga() {
     try {
         const data = yield call(async () => await api.fetchItems());
-        console.log({data})
         yield put(fetchServicesSuccess(data));
     } catch (e) {
-        console.log({e})
         yield put(fetchServicesFailure(e.message));
     }
 }
@@ -40,5 +48,5 @@ function* watchFetchServicesSaga() {
 
 export default function* saga() {
     yield spawn(watchFetchServicesSaga);
-    // yield spawn(watchSearchSkillsSaga)
+    yield spawn(watchFetchServiceSaga)
 }

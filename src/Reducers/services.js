@@ -2,6 +2,7 @@ import {
     FETCH_SERVICE_REQUEST,
     FETCH_SERVICES_REQUEST,
     FETCH_SERVICES_FAILURE,
+    FETCH_SERVICE_SUCCESS,
     FETCH_SERVICES_SUCCESS,
     CHANGE_SELECTED_ID
 } from '../Actions/actionTypes'
@@ -11,6 +12,7 @@ const initialState = {
     loading: false,
     error: null,
     selectedService: {
+        id: null,
         name: '',
         price: '',
         content: '',
@@ -20,6 +22,12 @@ const initialState = {
 
 export default function servicesReducer(state = initialState, action) {
     switch (action.type) {
+        case FETCH_SERVICE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
         case FETCH_SERVICES_REQUEST:
             return {
                 ...state,
@@ -33,6 +41,14 @@ export default function servicesReducer(state = initialState, action) {
                 loading: false,
                 error,
             };
+        case FETCH_SERVICE_SUCCESS:
+            const { service } = action.payload;
+            return {
+                ...state,
+                selectedService: service,
+                loading: false,
+                error: null,
+            };
         case FETCH_SERVICES_SUCCESS:
             const { items } = action.payload;
             return {
@@ -41,17 +57,11 @@ export default function servicesReducer(state = initialState, action) {
                 loading: false,
                 error: null,
             };
-        case FETCH_SERVICE_REQUEST:
-            return {
-                ...state,
-                loading: true,
-                error: null,
-            };
         case CHANGE_SELECTED_ID:
-            const { selectedId } = action.payload;
+            const { id } = action.payload;
             return {
                 ...state,
-                selectedId
+                selectedId: id
             }
         default:
             return state;

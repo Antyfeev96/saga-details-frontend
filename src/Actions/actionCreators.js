@@ -1,12 +1,12 @@
 import {
-    FETCH_SERVICE_REQUEST,
+    FETCH_SERVICE_REQUEST, FETCH_SERVICE_SUCCESS,
     FETCH_SERVICES_REQUEST, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILURE,
     CHANGE_SELECTED_ID
 } from "./actionTypes";
 
-export const fetchServiceRequest = search => ({
+export const fetchServiceRequest = id => ({
     type: FETCH_SERVICE_REQUEST,
-    payload: { search },
+    payload: { id }
 });
 
 export const fetchServicesRequest = () => ({
@@ -18,12 +18,17 @@ export const fetchServicesFailure = error => ({
     payload: { error }
 });
 
+export const fetchServiceSuccess = service => ({
+    type: FETCH_SERVICE_SUCCESS,
+    payload: { service }
+});
+
 export const fetchServicesSuccess = items => ({
     type: FETCH_SERVICES_SUCCESS,
-    payload: { items },
+    payload: { items }
 });
 
 export const changeSelectedId = id => ({
     type: CHANGE_SELECTED_ID,
-    payload: { id },
+    payload: { id }
 })

@@ -15,9 +15,6 @@ export default class API {
     async fetchItem(id) {
         try {
             const response = await fetch(`${this.url}/services/${id}`);
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
             return await response.json();
         } catch (e) {
             throw new Error(e)
