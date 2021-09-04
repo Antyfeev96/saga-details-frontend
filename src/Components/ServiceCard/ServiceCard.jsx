@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchServiceRequest,
-  fetchServicesRequest,
-  fetchServicesSuccess,
-  fetchServicesFailure
+  clearSelectedId
 } from '../../Actions/actionCreators';
 import React, { Fragment, useEffect } from "react";
 import Error from "../Error/Error";
@@ -49,8 +47,14 @@ export default function ServiceCard() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    if (state.selectedId === null && state.selectedService.name === '') return;
+    dispatch(fetchServiceRequest(state.selectedId))
+  }, [state.selectedId, dispatch])
+
   const handleCancel = () => {
     history.goBack()
+    dispatch(clearSelectedId());
   }
 
   const handleRepeat = async () => {

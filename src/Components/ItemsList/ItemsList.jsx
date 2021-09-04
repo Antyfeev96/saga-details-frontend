@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux'
 import React, {useEffect} from "react";
-import {fetchServicesRequest, changeSelectedId, fetchServiceRequest} from "../../Actions/actionCreators";
+import {fetchServicesRequest, changeSelectedId } from "../../Actions/actionCreators";
 import Spinner from "../Spinner/Spinner";
 import Error from "../Error/Error";
 import {Link, useRouteMatch,} from "react-router-dom";
@@ -48,21 +48,17 @@ export default function ItemsList() {
         dispatch(fetchServicesRequest());
     }, [dispatch])
 
-    const handleRepeat = async () => {
+    const handleRepeat = () => {
         dispatch(fetchServicesRequest());
     }
 
-    const handleSelectID = async (id) => {
-        console.log({id})
+    const handleSelectID = (id) => {
         dispatch(changeSelectedId(id))
-
-        dispatch(fetchServiceRequest(state.selectedId))
-        console.log({updatedId: state.selectedId})
     }
 
     return (
         <List>
-            {(state.error && <Error handleRepeat={handleRepeat}/>) || (state.loading ?
+            {(state.error && <Error handleRepeat={handleRepeat}/>) || (state.loading || state.items.length === 0 ?
                 <Spinner/> : state.items.map(item =>
                     <li key={item.id} onClick={() => handleSelectID(item.id)} className="item">
                         <Link to={`${match.url}/${item.id}`}> {item.name} {item.price} <span>₽</span></Link>

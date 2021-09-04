@@ -1,9 +1,8 @@
-import { takeLatest, put, spawn, debounce, retry, take, fork, call } from 'redux-saga/effects';
-import { fetchServiceRequest, fetchServiceSuccess, fetchServicesRequest, fetchServicesSuccess, fetchServicesFailure } from '../Actions/actionCreators';
+import { put, spawn, take, fork, call } from 'redux-saga/effects';
+import { fetchServiceSuccess, fetchServicesSuccess, fetchServicesFailure } from '../Actions/actionCreators';
 import {
     FETCH_SERVICE_REQUEST,
-    FETCH_SERVICES_REQUEST, FETCH_SERVICES_FAILURE, FETCH_SERVICES_SUCCESS,
-    CHANGE_SELECTED_ID
+    FETCH_SERVICES_REQUEST
 } from '../Actions/actionTypes';
 
 import API from "../API/index";

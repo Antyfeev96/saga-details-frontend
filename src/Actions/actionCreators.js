@@ -1,7 +1,7 @@
 import {
     FETCH_SERVICE_REQUEST, FETCH_SERVICE_SUCCESS,
     FETCH_SERVICES_REQUEST, FETCH_SERVICES_SUCCESS, FETCH_SERVICES_FAILURE,
-    CHANGE_SELECTED_ID
+    CHANGE_SELECTED_ID, CLEAR_SELECTED_ID
 } from "./actionTypes";
 
 export const fetchServiceRequest = id => ({
@@ -31,4 +31,8 @@ export const fetchServicesSuccess = items => ({
 export const changeSelectedId = id => ({
     type: CHANGE_SELECTED_ID,
     payload: { id }
+})
+
+export const clearSelectedId = () => ({
+    type: CLEAR_SELECTED_ID
 })

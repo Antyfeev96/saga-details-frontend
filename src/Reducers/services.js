@@ -4,7 +4,8 @@ import {
     FETCH_SERVICES_FAILURE,
     FETCH_SERVICE_SUCCESS,
     FETCH_SERVICES_SUCCESS,
-    CHANGE_SELECTED_ID
+    CHANGE_SELECTED_ID,
+    CLEAR_SELECTED_ID
 } from '../Actions/actionTypes'
 
 const initialState = {
@@ -62,6 +63,17 @@ export default function servicesReducer(state = initialState, action) {
             return {
                 ...state,
                 selectedId: id
+            }
+        case CLEAR_SELECTED_ID:
+            return {
+                ...state,
+                selectedId: null,
+                selectedService: {
+                    id: null,
+                    name: '',
+                    price: '',
+                    content: '',
+                }
             }
         default:
             return state;
